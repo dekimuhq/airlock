@@ -1,0 +1,19 @@
+Airlock is the airlock between your data and the world. Share a photo, screenshot, link or PDF into it, and a sanitized copy comes out — entirely on your device.
+
+THE GUARANTEE: Airlock declares no INTERNET permission. It is structurally incapable of sending your data anywhere. You can verify this in Settings → Apps → Airlock → Permissions: there is no network access to grant.
+
+WHAT IT DOES
+
+• Photo metadata destruction — re-encodes the image so ALL metadata is gone (EXIF, GPS location, timestamps, device model, XMP, maker notes), not just the tags it knows about.
+
+• Irreversible redaction — drag to paint black boxes over faces, names or numbers. The underlying pixels are destroyed, not hidden under a removable layer.
+
+• Link de-tracking — strips tracking parameters (utm_*, fbclid, gclid and many more) and unwraps offline-decodable redirect wrappers (Google, DuckDuckGo, Facebook, Reddit, LinkedIn and others). It never contacts the network, so opaque shorteners are deliberately left untouched.
+
+• PII redaction in text — finds and hides emails, phone numbers, payment-card numbers, IP addresses and IBANs.
+
+• PDF metadata stripping — removes the PDF Info dictionary (author, producer, timestamps) and the XMP metadata stream.
+
+Airlock plugs into the Android share sheet (images, text, PDFs) and the text-selection menu. No account, no database, no analytics, no ads, no trackers.
+
+Free and open source under the Apache 2.0 license.

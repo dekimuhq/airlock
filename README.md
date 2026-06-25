@@ -7,11 +7,22 @@
 Strip GPS & metadata from photos, irreversibly redact regions, and clean tracking
 parameters out of links — **100% on-device, with no internet permission at all.**
 
+[![CI](https://github.com/dekimuhq/airlock/actions/workflows/ci.yml/badge.svg)](https://github.com/dekimuhq/airlock/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-36E0C8.svg)](LICENSE)
 ![Platform: Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-36E0C8.svg)
 ![No network](https://img.shields.io/badge/permissions-no_INTERNET-6BE39A.svg)
 
 </div>
+
+## Install
+
+- **[GitHub Releases](https://github.com/dekimuhq/airlock/releases)** — download the signed APK
+  (~9 MB) and open it (enable "install unknown apps" for your browser/file manager). Min Android 8.0.
+- **F-Droid** — submission prepared (see [docs/fdroid/](docs/fdroid/)); builds from source and
+  signs independently, so no signing key is ever shared.
+
+Verify the no-network guarantee after install: **Settings → Apps → Airlock → Permissions** — there
+is no network permission to grant.
 
 ---
 

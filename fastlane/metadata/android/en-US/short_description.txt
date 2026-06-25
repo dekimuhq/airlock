@@ -1,0 +1,1 @@
+On-device privacy scrubber: strip photo/PDF metadata, redact, clean tracking links. No internet permission.

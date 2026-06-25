@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Everything below is skipped unless signing secrets are configured, so a tag push
+      # without secrets never publishes an unsigned APK. Add KEYSTORE_BASE64 +
+      # KEYSTORE_PASSWORD repo secrets to enable automated signed releases.
+      - uses: actions/setup-java@v4
+        if: env.KEYSTORE_BASE64 != ''
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+        if: env.KEYSTORE_BASE64 != ''
+
+      - name: Configure signing
+        if: env.KEYSTORE_BASE64 != ''
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/airlock-release.jks"
+          {
+            echo "storeFile=$RUNNER_TEMP/airlock-release.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=airlock"
+            echo "keyPassword=$KEYSTORE_PASSWORD"
+          } > keystore.properties
+
+      - name: Build release APK
+        if: env.KEYSTORE_BASE64 != ''
+        run: ./gradlew :app:assembleRelease
+
+      - name: Stage artifact
+        if: env.KEYSTORE_BASE64 != ''
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk "airlock-${TAG}.apk"
+          sha256sum "airlock-${TAG}.apk" > "airlock-${TAG}.apk.sha256"
+
+      - name: Publish to GitHub Release
+        if: env.KEYSTORE_BASE64 != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            airlock-${{ env.TAG }}.apk
+            airlock-${{ env.TAG }}.apk.sha256
+          generate_release_notes: true

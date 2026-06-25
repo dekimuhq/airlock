@@ -1,0 +1,45 @@
+# F-Droid build recipe for Airlock.
+# Submit by copying this file to fdroiddata/metadata/com.airlock.yml and opening a merge request.
+# See docs/fdroid/SUBMISSION.md for the step-by-step.
+
+Categories:
+  - Security
+  - Graphics
+License: Apache-2.0
+AuthorName: The Airlock Authors
+WebSite: https://github.com/dekimuhq/airlock
+SourceCode: https://github.com/dekimuhq/airlock
+IssueTracker: https://github.com/dekimuhq/airlock/issues
+Changelog: https://github.com/dekimuhq/airlock/blob/HEAD/CHANGELOG.md
+
+AutoName: Airlock
+Description: |-
+    Airlock is the airlock between your data and the world. Share a photo,
+    screenshot, link or PDF into it and a sanitized copy comes out, entirely
+    on-device.
+
+    It declares no INTERNET permission, so it cannot send your data anywhere.
+
+    * Photo metadata destruction (EXIF/GPS/XMP) by full pixel re-encode
+    * Irreversible pixel redaction
+    * Link de-tracking + offline redirect unwrapping
+    * PII redaction (email, phone, card, IP, IBAN) in text
+    * PDF metadata stripping (Info dictionary + XMP)
+
+    No account, no database, no analytics, no ads, no trackers.
+
+RepoType: git
+Repo: https://github.com/dekimuhq/airlock.git
+
+Builds:
+  - versionName: 2.1.1
+    versionCode: 4
+    commit: v2.1.1
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.1.1
+CurrentVersionCode: 4

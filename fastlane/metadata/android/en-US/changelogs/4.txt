@@ -1,0 +1,3 @@
+- PDF metadata stripping (Info dictionary + XMP)
+- More offline redirect-unwrapper hosts
+- R8 size shrink

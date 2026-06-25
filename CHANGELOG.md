@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.1.1
+
+- **Smaller download** — enabled R8 code shrinking + resource shrinking. The release APK drops
+  from ~20 MB to ~9 MB. PDFBox is fully kept (verified the build + UI + scrub code paths run
+  under R8), so behavior is unchanged.
+- **CI** — GitHub Actions run the unit tests, build the APK, and assert the no-INTERNET
+  guarantee on every push/PR; a tag-triggered workflow publishes signed releases (when signing
+  secrets are configured).
+- **F-Droid** — added fastlane metadata + a ready-to-submit build recipe (`docs/fdroid/`).
+
 ## v2.1.0
 
 - **PDF metadata stripping** — removes the PDF Info dictionary (Author, Producer, Creator,
