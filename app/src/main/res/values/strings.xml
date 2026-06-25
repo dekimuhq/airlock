@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Airlock</string>
+    <string name="tagline">The airlock between your data and the world</string>
+    <string name="no_internet_badge">No internet permission · 100% on-device</string>
+    <string name="process_text_label">Clean with Airlock</string>
+</resources>

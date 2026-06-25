@@ -1,0 +1,26 @@
+# Changelog
+
+## v2.0.0 — full release
+
+Adds to the MVP:
+
+- **Batch images** — share multiple photos at once (`ACTION_SEND_MULTIPLE`); export all cleaned.
+- **PII auto-redaction in text** — emails, phone numbers, Luhn-valid credit cards, IPv4
+  addresses, and mod-97-valid IBANs are detected and replaced.
+- **Offline redirect unwrapping** — Google, Facebook, Instagram, Reddit, YouTube, Steam,
+  Outlook SafeLinks and more, applied recursively. Opaque shorteners are deliberately left
+  untouched (no network is ever used).
+- **Privacy report** — after every scrub, see exactly what was removed.
+- **Custom tracking parameters** — add your own param names to strip.
+- **PROCESS_TEXT integration** — clean selected text straight from any app's selection menu.
+- **Session stats** on the home screen.
+
+## v1.0.0 — MVP
+
+- Image metadata destruction by full pixel re-encode (EXIF/XMP/IPTC/maker notes), with
+  orientation baked in.
+- Irreversible manual redaction (pixels destroyed, not an overlay).
+- Link de-tracking (UTM, click-ids, analytics tokens).
+- Share-target intents for single image and text.
+- Settings via DataStore.
+- **No `INTERNET` permission** — the core guarantee.
