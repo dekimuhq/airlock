@@ -107,6 +107,27 @@ echo "sdk.dir=/path/to/your/Android/Sdk" > local.properties
 # or: adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
+### Signed release build
+
+Create a keystore and a (gitignored) `keystore.properties` at the repo root:
+
+```bash
+keytool -genkeypair -v -keystore ~/.android-keystores/airlock-release.jks \
+  -alias airlock -keyalg RSA -keysize 4096 -validity 10000
+
+cat > keystore.properties <<'EOF'
+storeFile=/absolute/path/to/airlock-release.jks
+storePassword=...
+keyAlias=airlock
+keyPassword=...
+EOF
+
+./gradlew :app:assembleRelease    # → app/build/outputs/apk/release/app-release.apk
+```
+
+Without `keystore.properties` the release task still builds an unsigned APK. Prebuilt signed
+APKs are attached to each [GitHub Release](https://github.com/dekimuhq/airlock/releases).
+
 ### Try the share flow
 
 Open any gallery or browser, tap **Share**, and choose **Airlock**. Or from a terminal:
