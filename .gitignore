@@ -22,3 +22,7 @@ keystore.properties
 # Release artifacts
 dist/
 *.apk
+*.gpg
+*.enc
+RECOVERY.md
+.keystore-backup/
