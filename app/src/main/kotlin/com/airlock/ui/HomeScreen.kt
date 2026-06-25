@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,11 +43,16 @@ fun HomeScreen(
     stats: SessionStats,
     onCleanText: () -> Unit,
     onImagesPicked: (List<Uri>) -> Unit,
+    onPdfPicked: (Uri?) -> Unit,
     onSettings: () -> Unit,
 ) {
     val picker = rememberLauncherForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(maxItems = 20),
     ) { uris -> onImagesPicked(uris) }
+
+    val pdfPicker = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument(),
+    ) { uri -> onPdfPicked(uri) }
 
     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp).verticalScroll(rememberScrollState())) {
         Row(Modifier.fillMaxWidth().padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -77,6 +83,13 @@ fun HomeScreen(
             title = "Clean a link or text",
             subtitle = "Remove trackers · unwrap redirects · redact PII",
             onClick = onCleanText,
+        )
+        Spacer(Modifier.height(14.dp))
+        ActionTile(
+            icon = Icons.Filled.PictureAsPdf,
+            title = "Clean a PDF",
+            subtitle = "Strip author, producer & timestamps · remove XMP",
+            onClick = { pdfPicker.launch(arrayOf("application/pdf")) },
         )
 
         Spacer(Modifier.height(28.dp))

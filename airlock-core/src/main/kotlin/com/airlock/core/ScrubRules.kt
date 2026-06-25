@@ -55,23 +55,40 @@ object ScrubRules {
      * Key = host (no leading www.); value = the param name holding the encoded destination URL.
      */
     val REDIRECT_HOSTS: Map<String, String> = mapOf(
+        // Search engines
         "google.com" to "url",          // /url?q= or /url?url=
+        "duckduckgo.com" to "uddg",     // /l/?uddg=
+        // Social
         "l.facebook.com" to "u",
         "lm.facebook.com" to "u",
+        "l.messenger.com" to "u",
         "l.instagram.com" to "u",
         "out.reddit.com" to "url",
         "away.vk.com" to "to",
+        "vk.com" to "to",               // /away.php?to=
+        "t.umblr.com" to "z",           // /redirect?z=
+        "linkedin.com" to "url",        // /redir/redirect?url=
         "youtube.com" to "q",           // /redirect?q=
+        "m.youtube.com" to "q",
         "steamcommunity.com" to "url",  // /linkfilter/?url=
+        // Email providers / safe-link wrappers
         "href.li" to "",                // href.li/?<target> — target is the raw query string
         "nelreports.net" to "url",
         "deref-gmx.net" to "redirectUrl",
         "deref-web.de" to "redirectUrl",
+        "deref-mail.com" to "redirectUrl",
         "safelinks.protection.outlook.com" to "url",
+        "slack-redir.net" to "url",     // /link?url=
+        // Affiliate networks that encode the target in plain text
+        "redirect.viglink.com" to "u",
+        "go.redirectingat.com" to "url",
+        "go.skimresources.com" to "url",
+        "click.linksynergy.com" to "murl",
     )
 
     /** Alternate destination params some hosts use (checked in order). */
-    val REDIRECT_FALLBACK_PARAMS: List<String> = listOf("url", "q", "u", "to", "target", "dest", "redirectUrl")
+    val REDIRECT_FALLBACK_PARAMS: List<String> =
+        listOf("url", "q", "u", "to", "target", "dest", "redirectUrl", "uddg", "murl", "z")
 
     fun isTrackingParam(name: String): Boolean {
         val n = name.lowercase()

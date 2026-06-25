@@ -55,6 +55,37 @@ class LinkScrubberTest {
         assertEquals("https://real.example.org/article", r.cleaned)
     }
 
+    @Test fun unwrapsDuckDuckGoRedirect() {
+        val r = scrubber.cleanUrl("https://duckduckgo.com/l/?uddg=https%3A%2F%2Fprivacy.example%2Fpage&rut=abc")
+        assertTrue(r.unwrapped)
+        assertEquals("https://privacy.example/page", r.cleaned)
+    }
+
+    @Test fun unwrapsTumblrRedirect() {
+        val r = scrubber.cleanUrl("https://t.umblr.com/redirect?z=https%3A%2F%2Fblog.example%2Fpost&t=xyz")
+        assertTrue(r.unwrapped)
+        assertEquals("https://blog.example/post", r.cleaned)
+    }
+
+    @Test fun unwrapsSlackRedirect() {
+        val r = scrubber.cleanUrl("https://slack-redir.net/link?url=https%3A%2F%2Fdocs.example%2Fa%3Futm_source%3Dslack")
+        assertTrue(r.unwrapped)
+        assertEquals("https://docs.example/a", r.cleaned)
+    }
+
+    @Test fun unwrapsLinksynergyAffiliate() {
+        val r = scrubber.cleanUrl("https://click.linksynergy.com/deeplink?id=AAA&mid=123&murl=https%3A%2F%2Fshop.example%2Fitem")
+        assertTrue(r.unwrapped)
+        assertEquals("https://shop.example/item", r.cleaned)
+    }
+
+    @Test fun normalVkProfileLinkNotTreatedAsRedirect() {
+        // vk.com is in the redirect map, but a normal link has no destination param → left alone.
+        val r = scrubber.cleanUrl("https://vk.com/durov")
+        assertFalse(r.unwrapped)
+        assertEquals("https://vk.com/durov", r.cleaned)
+    }
+
     @Test fun doesNotUnwrapOpaqueShortener() {
         // bit.ly cannot be unwrapped offline; must be left intact (no network is ever made).
         val r = scrubber.cleanUrl("https://bit.ly/3abcDEF")

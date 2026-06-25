@@ -22,6 +22,7 @@ sealed interface Screen {
     data object Home : Screen
     data class TextScrub(val initial: String) : Screen
     data class ImageScrub(val uris: List<Uri>) : Screen
+    data class PdfScrub(val uri: Uri) : Screen
     data object Settings : Screen
 }
 
@@ -47,6 +48,7 @@ fun AppRoot(initial: Screen, settingsRepo: SettingsRepository) {
                     stats = stats,
                     onCleanText = { screen = Screen.TextScrub("") },
                     onImagesPicked = { uris -> if (uris.isNotEmpty()) screen = Screen.ImageScrub(uris) },
+                    onPdfPicked = { uri -> if (uri != null) screen = Screen.PdfScrub(uri) },
                     onSettings = { screen = Screen.Settings },
                 )
                 is Screen.TextScrub -> TextScrubScreen(
@@ -58,6 +60,10 @@ fun AppRoot(initial: Screen, settingsRepo: SettingsRepository) {
                 is Screen.ImageScrub -> ImageScrubScreen(
                     uris = s.uris,
                     stats = stats,
+                    onBack = { screen = Screen.Home },
+                )
+                is Screen.PdfScrub -> PdfScrubScreen(
+                    uri = s.uri,
                     onBack = { screen = Screen.Home },
                 )
                 is Screen.Settings -> SettingsScreen(

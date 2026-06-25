@@ -24,6 +24,15 @@ object ShareIntents {
         launch(context, send, "Share clean image")
     }
 
+    fun sharePdf(context: Context, uri: Uri) {
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        launch(context, send, "Share clean PDF")
+    }
+
     fun shareImages(context: Context, uris: List<Uri>) {
         if (uris.size == 1) return shareImage(context, uris.first())
         val send = Intent(Intent.ACTION_SEND_MULTIPLE).apply {

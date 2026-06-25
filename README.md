@@ -49,10 +49,11 @@ permission to grant.
 |---|---|---|
 | 🖼️ | **Metadata destruction** | Re-encodes the pixels, dropping **all** metadata (EXIF, XMP, IPTC, maker notes) — not just the tags we know about. Orientation is baked in first so the photo stays upright. |
 | ⬛ | **Irreversible redaction** | Drag to paint black boxes; the underlying pixels are **destroyed** in the bitmap, then flattened. No recoverable layer. |
-| 🔗 | **Link de-tracking** | Strips tracking params, unwraps offline-decodable redirect wrappers (Google/Facebook/Reddit/…). Never unwraps `bit.ly`/`t.co` — that would need a network request, which Airlock never makes. |
+| 🔗 | **Link de-tracking** | Strips tracking params, unwraps offline-decodable redirect wrappers (Google, DuckDuckGo, Facebook, Messenger, Reddit, LinkedIn, Tumblr, Slack, Outlook SafeLinks, affiliate networks, …). Never unwraps `bit.ly`/`t.co` — that would need a network request, which Airlock never makes. |
 | 🆔 | **PII redaction** | Finds and hides emails, phone numbers, Luhn-valid cards, IPs and mod-97-valid IBANs in shared text. |
+| 📄 | **PDF metadata stripping** | Removes the PDF Info dictionary (Author, Producer, Creator, timestamps) and the XMP metadata stream, fully offline via PDFBox-Android. |
 
-It plugs into Android where it matters: the **Share sheet** (single + batch images, text),
+It plugs into Android where it matters: the **Share sheet** (single + batch images, text, PDFs),
 and the **text-selection menu** (PROCESS_TEXT). Share in → sanitized copy out.
 
 <div align="center">
@@ -75,6 +76,7 @@ airlock/
 │   └── ScrubRules        the rule set (data, not code → testable & extensible)
 └── app/                 Android (Jetpack Compose)
     ├── scrub/ImageScrubber   EXIF read, orientation bake, pixel redaction, re-encode
+    ├── scrub/PdfScrubber      PDF Info-dictionary + XMP metadata removal (PDFBox-Android)
     ├── intent/ShareIntents   build outgoing share intents
     ├── data/Settings         DataStore (key-value file — no database)
     └── ui/                    Compose screens + theme
@@ -120,8 +122,8 @@ adb shell am start -a android.intent.action.SEND -t text/plain \
 
 | Suite | Command | Proves |
 |---|---|---|
-| Core unit tests (23) | `./gradlew :airlock-core:test` | Tracker stripping, redirect unwrapping, PII detection/validation |
-| Instrumented (3) | `./gradlew :app:connectedDebugAndroidTest` | EXIF is destroyed on a real device, redaction destroys pixels, output is a shareable content URI |
+| Core unit tests (28) | `./gradlew :airlock-core:test` | Tracker stripping, redirect unwrapping (12+ wrapper hosts), PII detection/validation |
+| Instrumented (6) | `./gradlew :app:connectedDebugAndroidTest` | EXIF is destroyed on a real device, redaction destroys pixels, PDF Info+XMP metadata removed, outputs are shareable content URIs |
 
 ## Privacy
 

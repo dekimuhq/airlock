@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.1.0
+
+- **PDF metadata stripping** — removes the PDF Info dictionary (Author, Producer, Creator,
+  timestamps) and the XMP metadata stream, fully offline via PDFBox-Android. New "Clean a PDF"
+  tile, share-target for `application/pdf`, and a metadata report screen.
+- **More redirect wrappers** — added DuckDuckGo, Messenger, LinkedIn, Tumblr, Slack, VK,
+  affiliate networks (VigLink, Skimlinks, Rakuten/LinkSynergy) and more to the offline
+  unwrapper. Still never touches the network for opaque shorteners.
+
 ## v2.0.0 — full release
 
 Adds to the MVP:

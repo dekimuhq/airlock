@@ -42,12 +42,19 @@ class MainActivity : ComponentActivity() {
         return when (intent.action) {
             Intent.ACTION_SEND -> {
                 val type = intent.type ?: ""
-                if (type.startsWith("text/")) {
-                    Screen.TextScrub(intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty())
-                } else if (type.startsWith("image/")) {
-                    val uri = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
-                    if (uri != null) Screen.ImageScrub(listOf(uri)) else Screen.Home
-                } else Screen.Home
+                when {
+                    type.startsWith("text/") ->
+                        Screen.TextScrub(intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty())
+                    type.startsWith("image/") -> {
+                        val uri = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+                        if (uri != null) Screen.ImageScrub(listOf(uri)) else Screen.Home
+                    }
+                    type == "application/pdf" -> {
+                        val uri = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+                        if (uri != null) Screen.PdfScrub(uri) else Screen.Home
+                    }
+                    else -> Screen.Home
+                }
             }
 
             Intent.ACTION_SEND_MULTIPLE -> {
